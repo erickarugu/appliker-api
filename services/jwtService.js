@@ -5,14 +5,14 @@ const Token = require('../models/UserLoginModel');
 
 const createToken = async (req) => {
   const token_id = await customId({
-    user_id: req.user.id,
+    user_id: req.user._id,
     date: Date.now(),
     randomLength: 4
   });
   const ip = (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
     req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
   const newUserToken = await Token({
-    userId: req.user.id,
+    userId: req.user._id,
     ipAddress: ip,
     device: req.headers["user-agent"] || null,
     tokenId: token_id
@@ -23,7 +23,7 @@ const createToken = async (req) => {
       console.log(err);
       return;
     }
-    const token_user = { id: req.user.id, token_id };
+    const token_user = { id: req.user._id, token_id };
     const accessToken = await jwt.sign(token_user, ACCESS_TOKEN_SECRET);
     return accessToken;
   });

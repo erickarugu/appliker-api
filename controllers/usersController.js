@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 module.exports = {
   // Create a user
-  createUser: (req, res, next) => {
+  registerUser: (req, res, next) => {
     uploadFunction(req, res, async function (err) {
       if (err) {
         return res.status(400).send({ success: false, message: err.message });
@@ -32,6 +32,32 @@ module.exports = {
         return res.status(500).json({ success: false, message: 'Could not save the user to DB', err });
       }
     });
+  },
+  loginUser: async (req, res, next) => {
+    try {
+      let user = await User.find({ where: { email: req.body.email } });
+      user = user[0];
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found.' });
+      }
+      const validPass = await bcrypt.compare(req.body.password, user.password);
+      if (!validPass) {
+        return res.status(400).json({ success: false, message: 'Wrong password.' });
+      }
+      req.user = user;
+      next();
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  findOneUser: async (req, res, next) => {
+    try {
+      let user = await User.find({ where: { displayName: req.params.displayName } });
+      user = user[0];
+      return res.status(200).json({ success: true, user });
+    } catch (err) {
+      console.log(err);
+    }
   },
   // Fetch all users
   getAllUsers: (req, res, next) => {
