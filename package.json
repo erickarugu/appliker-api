@@ -1,0 +1,39 @@
+{
+  "name": "appliker",
+  "version": "1.0.0",
+  "description": "Appliker backend API create using MongoDB, Express and Node.js.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon -r dotenv/config server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erickarugu/appliker-api.git"
+  },
+  "keywords": [
+    "liker",
+    "appliker"
+  ],
+  "author": "Eric Karugu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erickarugu/appliker-api/issues"
+  },
+  "homepage": "https://github.com/erickarugu/appliker-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.14"
+  },
+  "engines": {
+    "node": "14.x"
+  }
+}
