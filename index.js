@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 // Routes
 const usersRoute = require('./routes/usersRoute');
+const postsRoute = require('./routes/postsRoute');
+const commentsRoute = require('./routes/commentsRoute');
 
 // Initialize the express app
 const app = express();
@@ -49,7 +51,10 @@ app.get('/api/v1', (req, res, next) => {
   res.json({ message: 'Hi There, Welcome to App Liker V1 API!' });
 });
 
+// Routes
 app.use('/api/v1/users', usersRoute.router);
+app.use('/api/v1/posts', postsRoute.router);
+app.use('/api/v1/comments', commentsRoute.router);
 
 // 
 module.exports = app;

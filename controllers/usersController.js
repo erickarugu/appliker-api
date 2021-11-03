@@ -89,20 +89,21 @@ module.exports = {
     }
   },
   followUser: async (req, res, next) => {
-    console.log(req.user.id);
     try {
-      let user = await User.find({ where: { displayName: req.params.displayName } });
+      let user = await User.find({ displayName: req.params.displayName });
+      console.log(req.user.id, user);
       let currentUser = await User.findOne({ _id: req.user.id });
       user = user[0];
-      if (!user) return res.status(404).json({ success: false, message: 'Could not find specified user' });
+      if (user === undefined) return res.status(404).json({ success: false, message: 'Could not find specified user' });
+      if (user._id === currentUser._id) return res.status(404).json({ success: false, message: 'Cnnot follow youselft' });
 
       if (!user.followers.includes(req.user.id)) {
         let followers = [...user.followers, req.user.id];
         let followings = [...currentUser.followings, user.id];
 
-        await User.findOneAndUpdate({ where: { displayName: req.params.displayName } }, { followers: followers }).then(async (err, res) => {
+        await User.findOneAndUpdate({ _id: user._id }, { followers: followers }).then(async (err, res) => {
           console.log(currentUser.displayName);
-          await User.updateOne({ displayName: currentUser.displayName }, { followings: followings });
+          await User.updateOne({ _id: currentUser._id }, { followings: followings });
         });
         res.status(200).json({ success: true, message: 'User followed' });
       } else {
@@ -117,17 +118,17 @@ module.exports = {
   unfollowUser: async (req, res, next) => {
     console.log(req.user.id);
     try {
-      let user = await User.find({ where: { displayName: req.params.displayName } });
+      let user = await User.find({ displayName: req.params.displayName });
       let currentUser = await User.findOne({ _id: req.user.id });
       user = user[0];
-      if (!user) return res.status(404).json({ success: false, message: 'Could not find specified user' });
+      if (user === undefined) return res.status(404).json({ success: false, message: 'Could not find specified user' });
       if (user.followers.includes(req.user.id)) {
         let followers = [...user.followers];
         let followings = [...currentUser.followings];
 
         followers.splice(followers.indexOf(req.user.id), 1);
         followings.splice(followings.indexOf(user.id), 1);
-        await User.findOneAndUpdate({ where: { displayName: req.params.displayName } }, { followers: followers }).then(async (err, res) => {
+        await User.findOneAndUpdate({ displayName: req.params.displayName }, { followers: followers }).then(async (err, res) => {
           await User.updateOne({ displayName: currentUser.displayName }, { followings: followings });
         });
 
@@ -140,5 +141,16 @@ module.exports = {
       return res.status(500).json({ success: false, message: 'Server error!', err });
     }
     return res.status(200);
+  },
+  logoutUser: async (req, res, next) => {
+    try {
+      let savedToken = await Token.findOne({ userId: req.user.id });
+      if (savedToken) {
+        await Token.deleteOne({ userId: req.user.is });
+        res.status(200).json({ success: true, message: 'User logged out' });
+      }
+    } catch (err) {
+      return res.status(500).json({ success: false, message: 'Server error!', err });
+    }
   }
 };

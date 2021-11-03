@@ -6,7 +6,6 @@ const commentsRoute = express.Router();
 exports.router = (() => {
   commentsRoute.get('/:postId', commentsController.getAllPostComments);
   commentsRoute.post('/:postId', authenticateToken, commentsController.createComment);
-  commentsRoute.post('/like/:commentId', authenticateToken, commentsController.likeComment);
-  commentsRoute.post('/unlike/:commentId', authenticateToken, commentsController.unlikeComment);
+  commentsRoute.get('/comment/:commentId', commentsController.findOneComment);
   return commentsRoute;
 })();

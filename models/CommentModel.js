@@ -14,10 +14,6 @@ const CommentSchema = new mongoose.Schema({
     max: 2000,
     required: true
   },
-  likes: {
-    type: Array,
-    default: []
-  },
   createdAt: {
     type: Date,
     default: Date.now
