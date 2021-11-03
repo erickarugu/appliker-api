@@ -48,4 +48,4 @@ To view the app, point your browser to `http://localhost:PORT`
 
 ## Hosting
 The API is hosted on Heroku:
-- [https://app-liker.herokuapp.com/api/v1/posts](https://app-liker.herokuapp.com/api/v1/posts)
+- [https://app-liker.herokuapp.com/api/v1/posts](https://app-liker.herokuapp.com/api/v1)
