@@ -27,9 +27,8 @@ if (process.env.NODE_ENV == "development") {
   console.log('Testing Mongo DB connected');
 }
 // Log requests in development mode only
-if (process.env.NODE_ENV == "development") {
-  app.use(dev('common'));
-}
+
+app.use(dev('common'));
 // Middlewares
 // app.use(helmet());
 // Parse json from request body
