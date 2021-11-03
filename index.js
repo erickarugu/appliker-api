@@ -19,15 +19,10 @@ if (process.env.NODE_ENV == "development") {
     .catch(err => console.log(err));
 } else if (process.env.NODE_ENV == "production") {
   mongoose.connect(process.env.MONGO_PROD_URL, {
-    useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,
-    useFindAndModify: true,
-  }, () => {
-    try {
-      console.log('Production Mongo DB connected');
-    } catch (error) {
-      console.log(error);
-    }
-  }); ``;
+    useNewUrlParser: true, useUnifiedTopology: true
+
+  }).then(() => console.log('Production Mongo DB connected'))
+    .catch(err => console.log(err));
 } else {
   console.log('Testing Mongo DB connected');
 }
