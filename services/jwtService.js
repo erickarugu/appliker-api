@@ -23,10 +23,10 @@ const createToken = async (req) => {
       console.log(err);
       return;
     }
-    const token_user = { id: req.user._id, token_id };
-    const accessToken = await jwt.sign(token_user, ACCESS_TOKEN_SECRET);
-    return accessToken;
   });
+  const token_user = { id: req.user._id, token_id };
+  const accessToken = await jwt.sign(token_user, ACCESS_TOKEN_SECRET);
+  return accessToken;
 };
 module.exports = {
   generateToken: async (req, res, next) => {
